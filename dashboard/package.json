@@ -34,7 +34,7 @@
     "@types/node": "^20.3.3",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-v8": "^0.32.4",
-    "@vue-macros/reactivity-transform": "^0.3.10",
+    "@vue-macros/reactivity-transform": "^0.3.19",
     "bootstrap": "^5.3.0",
     "happy-dom": "^9.20.3",
     "npm-check-updates": "^16.10.13",
