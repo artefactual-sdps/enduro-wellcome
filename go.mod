@@ -36,7 +36,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	go.artefactual.dev/tools v0.3.0
 	go.temporal.io/api v1.23.0
-	go.temporal.io/sdk v1.23.1
+	go.temporal.io/sdk v1.24.0
 	goa.design/goa/v3 v3.11.3
 	goa.design/plugins/v3 v3.11.3
 	gocloud.dev v0.30.0
