@@ -17,6 +17,8 @@ import (
 	"github.com/artefactual-sdps/enduro/internal/package_"
 	packagefake "github.com/artefactual-sdps/enduro/internal/package_/fake"
 	watcherfake "github.com/artefactual-sdps/enduro/internal/watcher/fake"
+	"github.com/artefactual-sdps/enduro/internal/wellcome"
+	wellcomeActivities "github.com/artefactual-sdps/enduro/internal/wellcome/activities"
 	"github.com/artefactual-sdps/enduro/internal/workflow/activities"
 )
 
@@ -46,6 +48,7 @@ func (s *ProcessingWorkflowTestSuite) SetupTest() {
 	s.env.RegisterActivityWithOptions(activities.NewMoveToPermanentStorageActivity(nil).Execute, temporalsdk_activity.RegisterOptions{Name: activities.MoveToPermanentStorageActivityName})
 	s.env.RegisterActivityWithOptions(activities.NewPollMoveToPermanentStorageActivity(nil).Execute, temporalsdk_activity.RegisterOptions{Name: activities.PollMoveToPermanentStorageActivityName})
 	s.env.RegisterActivityWithOptions(activities.NewRejectPackageActivity(nil).Execute, temporalsdk_activity.RegisterOptions{Name: activities.RejectPackageActivityName})
+	s.env.RegisterActivityWithOptions(wellcomeActivities.NewIngestActivity(logger.WithName("wellcome"), wellcome.Config{}).Execute, temporalsdk_activity.RegisterOptions{Name: wellcomeActivities.IngestActivityName})
 
 	s.workflow = NewProcessingWorkflow(logger, pkgsvc, wsvc)
 }
@@ -145,6 +148,7 @@ func (s *ProcessingWorkflowTestSuite) TestAutoApprovedAIP() {
 	s.env.OnActivity(completePreservationActionLocalActivity, ctx, pkgsvc, mock.AnythingOfType("*workflow.completePreservationActionLocalActivityParams")).Return(nil).Once()
 	// TODO: CleanUpActivityName
 	// TODO: DeleteOriginalActivityName
+	// TODO: WellcomeUploadActivityName
 
 	s.env.ExecuteWorkflow(
 		s.workflow.Execute,

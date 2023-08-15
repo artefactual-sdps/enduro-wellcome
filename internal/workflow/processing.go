@@ -20,6 +20,7 @@ import (
 	"github.com/artefactual-sdps/enduro/internal/ref"
 	"github.com/artefactual-sdps/enduro/internal/temporal"
 	"github.com/artefactual-sdps/enduro/internal/watcher"
+	wellcomeActivities "github.com/artefactual-sdps/enduro/internal/wellcome/activities"
 	"github.com/artefactual-sdps/enduro/internal/workflow/activities"
 )
 
@@ -531,6 +532,12 @@ func (w *ProcessingWorkflow) SessionHandler(sessCtx temporalsdk_workflow.Context
 			}
 		}
 
+		// Ingest a copy of the AIP in the Wellcome Storage Service before
+		// moving the AIP to permanent storage.
+		if err := w.ingestWCSS(sessCtx, tinfo); err != nil {
+			return err
+		}
+
 		// Identifier of the preservation task for permanent storage move.
 		var movePreservationTaskID uint
 
@@ -658,4 +665,31 @@ func (w *ProcessingWorkflow) transferA3m(sessCtx temporalsdk_workflow.Context, t
 	tinfo.StoredAt = temporalsdk_workflow.Now(sessCtx).UTC()
 
 	return err
+}
+
+// IngestWCSS copies an AIP to a Wellcome S3 bucket and ingests into the
+// Wellcome Collection Storage Server.
+func (w *ProcessingWorkflow) ingestWCSS(
+	sessCtx temporalsdk_workflow.Context, tinfo *TransferInfo,
+) error {
+	activityOpts := temporalsdk_workflow.WithActivityOptions(sessCtx, temporalsdk_workflow.ActivityOptions{
+		StartToCloseTimeout: time.Minute * 1,
+		RetryPolicy: &temporalsdk_temporal.RetryPolicy{
+			MaximumAttempts: 1,
+		},
+	})
+	err := temporalsdk_workflow.ExecuteActivity(
+		activityOpts,
+		wellcomeActivities.IngestActivityName,
+		&wellcomeActivities.IngestActivityParams{
+			AIPID:   tinfo.SIPID,
+			AIPPath: tinfo.AIPPath,
+			Key:     tinfo.Key,
+		},
+	).Get(activityOpts, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -15,6 +15,7 @@ import (
 	"github.com/artefactual-sdps/enduro/internal/temporal"
 	"github.com/artefactual-sdps/enduro/internal/upload"
 	"github.com/artefactual-sdps/enduro/internal/watcher"
+	"github.com/artefactual-sdps/enduro/internal/wellcome"
 )
 
 type ConfigurationValidator interface {
@@ -33,6 +34,7 @@ type Configuration struct {
 	Storage     storage.Config
 	Upload      upload.Config
 	A3m         a3m.Config
+	Wellcome    wellcome.Config
 }
 
 func (c Configuration) Validate() error {

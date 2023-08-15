@@ -10,6 +10,7 @@ resources:
   - minio-secret.yaml
   - mysql-secret.yaml
   - temporal-ui-secret.yaml
+  - wellcome-secret.yaml
 images:
   - name: ghcr.io/artefactual-sdps/enduro:main
     newName: enduro

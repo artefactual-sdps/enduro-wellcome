@@ -6,7 +6,8 @@ spec:
   template:
     spec:
       containers:
-        - name: a3m
-          env:
-            - name: A3M_DEBUG
-              value: "true"
+      - name: a3m
+        env:
+        - name: A3M_DEBUG
+          value: "true"
+

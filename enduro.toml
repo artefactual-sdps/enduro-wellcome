@@ -91,3 +91,22 @@ key = "minio"
 secret = "minio123"
 region = "us-west-1"
 bucket = "sips"
+
+[wellcome.upload]
+enabled = true
+endpoint = "https://s3.amazonaws.com"
+region = "eu-west-1"
+pathStyle = false
+profile = "workflow-developer"
+bucket = "wellcomecollection-workflow-stage-upload"
+
+[wellcome.oauth]
+tokenURL = "https://auth.wellcomecollection.org/oauth2/token"
+grantType = "client_credentials"
+clientID = "620c3prklsjk490ddq8std5njv"
+secretID = ""
+
+[wellcome.ingests]
+apiURL = "https://api-stage.wellcomecollection.org/storage/v1/ingests"
+type = "create"
+spaceID = "a3m-testing"

@@ -15,9 +15,13 @@ debugListen = "127.0.0.1:9001"
 
 [temporal]
 address = "host:port"
+
+[upload]
+secret = "don't tell"
 `
 
 func TestConfig(t *testing.T) {
+	t.Setenv("ENDURO_UPLOAD_SECRET", "Sssh-Secret!")
 	tmpDir := fs.NewDir(
 		t, "",
 		fs.WithFile(
@@ -34,4 +38,5 @@ func TestConfig(t *testing.T) {
 	assert.Equal(t, found, true)
 	assert.Equal(t, configFileUsed, configFile)
 	assert.Equal(t, c.Temporal.Address, "host:port")
+	assert.Equal(t, c.Upload.Secret, "Sssh-Secret!")
 }

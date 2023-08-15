@@ -30,6 +30,7 @@ import (
 	"github.com/artefactual-sdps/enduro/internal/temporal"
 	"github.com/artefactual-sdps/enduro/internal/version"
 	"github.com/artefactual-sdps/enduro/internal/watcher"
+	wellcomeActivities "github.com/artefactual-sdps/enduro/internal/wellcome/activities"
 	"github.com/artefactual-sdps/enduro/internal/workflow/activities"
 )
 
@@ -157,6 +158,10 @@ func main() {
 		w.RegisterActivityWithOptions(activities.NewMoveToPermanentStorageActivity(storageClient).Execute, temporalsdk_activity.RegisterOptions{Name: activities.MoveToPermanentStorageActivityName})
 		w.RegisterActivityWithOptions(activities.NewPollMoveToPermanentStorageActivity(storageClient).Execute, temporalsdk_activity.RegisterOptions{Name: activities.PollMoveToPermanentStorageActivityName})
 		w.RegisterActivityWithOptions(activities.NewRejectPackageActivity(storageClient).Execute, temporalsdk_activity.RegisterOptions{Name: activities.RejectPackageActivityName})
+		w.RegisterActivityWithOptions(
+			wellcomeActivities.NewIngestActivity(logger.WithName("wellcome"), cfg.Wellcome).Execute,
+			temporalsdk_activity.RegisterOptions{Name: wellcomeActivities.IngestActivityName},
+		)
 
 		g.Add(
 			func() error {
