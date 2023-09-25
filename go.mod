@@ -41,7 +41,7 @@ require (
 	goa.design/goa/v3 v3.13.0
 	goa.design/plugins/v3 v3.12.4
 	gocloud.dev v0.34.0
-	google.golang.org/grpc v1.58.1
+	google.golang.org/grpc v1.58.2
 	gopkg.in/square/go-jose.v2 v2.6.0
 	gotest.tools/v3 v3.5.0
 )
